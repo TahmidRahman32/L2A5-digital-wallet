@@ -19,6 +19,11 @@ interface IEnvConfig {
    FRONTEND_URL: string;
    EXPRESS_SESSION_SECRET: string;
    ADMIN_PHONE: string;
+   WITHDRAWAL_FEE: number;
+   CASH_OUT_FEE: number;
+   AGENT_COMMISSION_RATE: number;
+   MIN_WITHDRAWAL: number;
+   MAX_WITHDRAWAL: number;
 }
 
 const envConfigFunction = (): IEnvConfig => {
@@ -39,6 +44,11 @@ const envConfigFunction = (): IEnvConfig => {
       "ADMIN_PHONE",
       "ADMIN_EMAIL",
       "ADMIN_PASSWORD",
+      "WITHDRAWAL_FEE",
+      "CASH_OUT_FEE",
+      "AGENT_COMMISSION_RATE",
+      "MIN_WITHDRAWAL",
+      "MAX_WITHDRAWAL",
    ];
    envRequiredVariable.forEach((key) => {
       if (!process.env[key]) {
@@ -62,6 +72,11 @@ const envConfigFunction = (): IEnvConfig => {
       EXPRESS_SESSION_SECRET: process.env.EXPRESS_SESSION_SECRET as string,
       FRONTEND_URL: process.env.FRONTEND_URL as string,
       ADMIN_PHONE: process.env.ADMIN_PHONE as string,
+      WITHDRAWAL_FEE: process.env.WITHDRAWAL_FEE as unknown as number,
+      CASH_OUT_FEE: process.env.CASH_OUT_FEE as unknown as number,
+      AGENT_COMMISSION_RATE: process.env.AGENT_COMMISSION_RATE as unknown as number,
+      MIN_WITHDRAWAL: process.env.MIN_WITHDRAWAL as unknown as number,
+      MAX_WITHDRAWAL: process.env.MAX_WITHDRAWAL as unknown as number,
    };
 };
 

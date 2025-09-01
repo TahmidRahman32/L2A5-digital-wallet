@@ -9,7 +9,7 @@ export enum Role {
  
 }
 
-export enum IsActive {
+export enum Status {
    ACTIVE = "ACTIVE",
    SUSPENDED = "SUSPENDED",
    
@@ -39,18 +39,11 @@ export interface IauthProvider {
 
 
 export interface IUser {
-   _id: Types.ObjectId;
    name: string;
-   phone: string;
-   email: string; // unique login id
-   password?: string; // hashed
-   role?: Role;
-   status?: IsActive;
-   isDelete?: string;
-   isVerified?: boolean;
-   agent?: {
-      approved: boolean;
-      commissionPercent?: number; // override default
-   } | null;
+   email: string;
+   password: string;
+   phone?: string;
+   role: Role
+   status: Status
    auth?: IauthProvider[];
 }

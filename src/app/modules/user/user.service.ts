@@ -1,5 +1,5 @@
 import AppError from "../../middlewares/errorHelpers/appError";
-import { IauthProvider,  IUser, Role } from "./user.interface";
+import { IauthProvider, IUser, Role } from "./user.interface";
 
 import httpStatus from "http-status-codes";
 import bcryptjs from "bcryptjs";
@@ -9,16 +9,7 @@ import User from "./user.model";
 import { Wallet } from "../wallet/wallet.model";
 const createUser = async (payload: Partial<IUser>) => {
    const { email, password, ...rest } = payload;
-
-   // const isUserExist = await User.findOne({ email });
-
-
-
    const hashedPassword = await bcryptjs.hash(password as string, Number(envConfig.BCRYPT_SALT_ROUNDS));
-
-   // const isPasswordMatch = await bcryptjs.compare(password as string, hashedPassword);
-   // console.log(isPasswordMatch);
-
    const authProvider: IauthProvider = { provider: "credential", providerId: email! };
 
    const user = await User.create({
@@ -30,7 +21,7 @@ const createUser = async (payload: Partial<IUser>) => {
 
    const wallet = await Wallet.create({ user: user._id });
    console.log(wallet);
-   
+
    return {
       user,
       wallet,
@@ -51,7 +42,7 @@ const updateUser = async (userId: string, payload: Partial<IUser>, decodedToken:
          throw new AppError(httpStatus.FORBIDDEN, "you are not authorized");
       }
    }
-   if (payload.status|| payload.isDelete || payload.status) {
+   if (payload.status || payload.status || payload.status) {
       if (decodedToken.role === Role.USER || decodedToken.role === Role.AGENT) {
          throw new AppError(httpStatus.FORBIDDEN, "you are not authorized");
       }

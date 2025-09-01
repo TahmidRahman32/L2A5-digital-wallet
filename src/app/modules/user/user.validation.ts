@@ -1,5 +1,5 @@
 import z from "zod";
-import { Role } from "./user.interface";
+import { Role, Status } from "./user.interface";
 
 export const createUserZodSchema = z.object({
    name: z.string({ message: "Name must be a string" }).min(2, { message: "Name must be at least 2 characters" }).max(50, { message: "Name must be at most 50 characters" }),
@@ -15,7 +15,7 @@ export const createUserZodSchema = z.object({
       .string()
       .regex(/^01[3-9]\d{8}$/, "Invalid Bangladeshi phone number")
       .optional(),
-   address: z.string().optional(),
+   role: z.enum(Object.values(Role) as [string]).optional(),
 });
 export const updateUserZodSchema = z.object({
    name: z
@@ -35,8 +35,7 @@ export const updateUserZodSchema = z.object({
       .string()
       .regex(/^01[3-9]\d{8}$/, "Invalid Bangladeshi phone number")
       .optional(),
-   address: z.string().optional(),
-   isActive: z.enum(Object.values(Role) as [string]).optional(),
-   isDelete: z.boolean({ message: "isDelete must be a true or false" }).optional(),
-   isVerified: z.boolean({ message: "isVerified must be a true or false" }).optional(),
+
+   role: z.enum(Object.values(Role) as [string]).optional(),
+   status: z.enum(Object.values(Status) as [string]).optional(),
 });

@@ -21,7 +21,7 @@ const transactionSchema = new Schema<ITransaction>(
       },
       description: String,
    },
-   { timestamps: true }
+   { timestamps: true, versionKey: false }
 );
 
 export const Transaction = mongoose.model<ITransaction>("Transaction", transactionSchema);
