@@ -7,6 +7,7 @@ const walletSchema = new Schema<IWallet>(
       user: { type: Schema.Types.ObjectId, ref: "User", required: true, unique: true },
       balance: { type: Number, default: 50, min: 0 },
       status: { type: String, enum: Object.values(Status), default: Status.ACTIVE },
+      isBlocked: { type: Boolean, default: false },
    },
    { timestamps: true, versionKey: false }
 );

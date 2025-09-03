@@ -130,7 +130,7 @@ export const authCheck =
          if (isUserExist.status === Status.SUSPENDED) {
             throw new AppError(httpStatus.BAD_REQUEST, "User is Suspended");
          }
-
+      
          if (authRoles.length && !authRoles.includes(decoded.role)) {
             throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
          }

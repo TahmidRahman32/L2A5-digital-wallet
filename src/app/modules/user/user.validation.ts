@@ -11,10 +11,8 @@ export const createUserZodSchema = z.object({
       .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
       .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
       .regex(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/, { message: "Password must contain at least one special character" }),
-   phone: z
-      .string()
-      .regex(/^01[3-9]\d{8}$/, "Invalid Bangladeshi phone number")
-      .optional(),
+   phone: z.string().regex(/^01[3-9]\d{8}$/, { message: "Invalid Bangladeshi phone number" }),
+   // .regex(/^\+8801[3-9]\d{8}$/, { message: "Invalid Bangladeshi phone number" })
    role: z.enum(Object.values(Role) as [string]).optional(),
 });
 export const updateUserZodSchema = z.object({
@@ -33,8 +31,10 @@ export const updateUserZodSchema = z.object({
       .optional(),
    phone: z
       .string()
-      .regex(/^01[3-9]\d{8}$/, "Invalid Bangladeshi phone number")
+      .regex(/^01[3-9]\d{8}$/, { message: "Invalid Bangladeshi phone number" })
+      // .regex(/^\+8801[3-9]\d{8}$/, { message: "Invalid Bangladeshi phone number" })
       .optional(),
+   // phone: z.string().regex(/^\+8801[3-9]\d{8}$/, "Invalid Bangladeshi phone number").optional(),
 
    role: z.enum(Object.values(Role) as [string]).optional(),
    status: z.enum(Object.values(Status) as [string]).optional(),

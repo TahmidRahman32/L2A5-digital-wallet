@@ -4,15 +4,14 @@ import { Types } from "mongoose";
 
 export enum Role {
    ADMIN = "ADMIN",
-   AGENT= "AGENT",
+   AGENT = "AGENT",
    USER = "USER",
- 
 }
 
 export enum Status {
    ACTIVE = "ACTIVE",
    SUSPENDED = "SUSPENDED",
-   
+   DELETED = "DELETED",
 }
 
 export interface IauthProvider {
@@ -37,13 +36,15 @@ export interface IauthProvider {
 //    auth: IauthProvider[];
 // }
 
-
 export interface IUser {
    name: string;
    email: string;
    password: string;
-   phone?: string;
-   role: Role
-   status: Status
+   phone: string;
+   role: Role;
+   transactionPin?: string;
+   status: Status;
    auth?: IauthProvider[];
+   isActive?: boolean;
+   comparePin(candidatePin: string): Promise<boolean>;
 }

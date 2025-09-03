@@ -20,7 +20,6 @@ const createUser = async (payload: Partial<IUser>) => {
    });
 
    const wallet = await Wallet.create({ user: user._id });
-   console.log(wallet);
 
    return {
       user,

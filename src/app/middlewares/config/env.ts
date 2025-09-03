@@ -24,6 +24,8 @@ interface IEnvConfig {
    AGENT_COMMISSION_RATE: number;
    MIN_WITHDRAWAL: number;
    MAX_WITHDRAWAL: number;
+   TRANSACTION_FEE: number;
+   CASH_IN_FEE: number;
 }
 
 const envConfigFunction = (): IEnvConfig => {
@@ -49,6 +51,8 @@ const envConfigFunction = (): IEnvConfig => {
       "AGENT_COMMISSION_RATE",
       "MIN_WITHDRAWAL",
       "MAX_WITHDRAWAL",
+      "TRANSACTION_FEE",
+      "CASH_IN_FEE"
    ];
    envRequiredVariable.forEach((key) => {
       if (!process.env[key]) {
@@ -77,6 +81,8 @@ const envConfigFunction = (): IEnvConfig => {
       AGENT_COMMISSION_RATE: process.env.AGENT_COMMISSION_RATE as unknown as number,
       MIN_WITHDRAWAL: process.env.MIN_WITHDRAWAL as unknown as number,
       MAX_WITHDRAWAL: process.env.MAX_WITHDRAWAL as unknown as number,
+      TRANSACTION_FEE: process.env.TRANSACTION_FEE as unknown as number,
+      CASH_IN_FEE: process.env.CASH_IN_FEE as unknown as number,
    };
 };
 

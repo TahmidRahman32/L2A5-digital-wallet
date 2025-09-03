@@ -4,5 +4,6 @@ import { Status } from "../user/user.interface";
 export interface IWallet extends Document {
    user: mongoose.Types.ObjectId;
    balance: number;
-   status: Status
+   status: Status;
+   isBlocked?: boolean;
 }
