@@ -5,7 +5,7 @@ const transactionSchema = new Schema<ITransaction>(
    {
       from: { type: Schema.Types.ObjectId, ref: "User" },
       to: { type: Schema.Types.ObjectId, ref: "User" },
-      amount: { type: Number, required: true, min: 0 },
+      amount: { type: Number,  min: 0 },
       type: {
          type: String,
          enum: ["deposit", "withdraw", "transfer", "cash-in", "cash-out"],

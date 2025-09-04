@@ -31,6 +31,7 @@ const userSchema = new Schema<IUser>(
          enum: Object.values(Status),
          default: Status.ACTIVE,
       },
+      isApproved: { type: Boolean, default: false },
       auth: [authProviderSchema],
    },
    {

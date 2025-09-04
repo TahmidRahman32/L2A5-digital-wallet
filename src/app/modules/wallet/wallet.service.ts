@@ -6,8 +6,9 @@ import { Transaction } from "../transaction/transaction.model";
 import { Response } from "express";
 import { sendResponse } from "../../middlewares/Utils/sendResponse";
 import { envConfig } from "../../middlewares/config/env";
-import { transactionAddMoney, transactionSendMoney, transactionWithdraw } from "../transaction/transaction.controller";
+import {  transactionSendMoney, } from "../transaction/transaction.controller";
 import User from "../user/user.model";
+import { transactions } from "../transaction/transaction.service";
 
 const getMyWallet = async (userId: string) => {
    const wallet = await Wallet.findOne({ user: userId });
@@ -40,7 +41,16 @@ const addMoney = async (userId: string, amount: number, resp: Response) => {
       if (!wallet) {
          throw new AppError(httpStatus.NOT_FOUND, "Wallet not found or blocked");
       }
-      const transaction = await transactionAddMoney(userAmount, amount, session);
+      // const transaction = await transactionAddMoney(userAmount, amount, session);
+      const transaction = await transactions(
+         userAmount,
+         amount,
+         0,
+         "add",
+         "completed",
+         `Added ৳${amount} to wallet`,
+         session
+      );
 
       await session.commitTransaction();
       session.endSession();
@@ -90,7 +100,7 @@ const withdrawMoney = async (userId: string, amount: number, resp: Response) => 
       }
 
       const totalDeduction = amountNum + feeNum;
-      console.log(totalDeduction, "Total Deduction");
+      // console.log(totalDeduction, "Total Deduction");
 
       if (wallet.balance < totalDeduction) {
          throw new AppError(httpStatus.BAD_REQUEST, `Insufficient balance. Need ${totalDeduction} Taka (amount + fee)`);
@@ -98,8 +108,18 @@ const withdrawMoney = async (userId: string, amount: number, resp: Response) => 
 
       // Deduct amount + fee from wallet
       const updatedWallet = await Wallet.findByIdAndUpdate(wallet._id, { $inc: { balance: -totalDeduction } }, { new: true, session });
-      console.log(updatedWallet, "Updated Wallet");
-      const transaction = await transactionWithdraw(userId, amountNum, feeNum, session);
+      // console.log(updatedWallet, "Updated Wallet");
+      // const transaction = await transactionWithdraw(userId, amountNum, feeNum, session);
+
+      const transaction = await transactions(
+         userId, 
+         amountNum,
+         feeNum,
+         "withdraw",
+         "completed",
+         `Withdrawal of ৳${amountNum} (Fee: ৳${feeNum})`,
+         session
+      );
 
       await session.commitTransaction();
       session.endSession();

@@ -10,7 +10,7 @@ export enum Role {
 
 export enum Status {
    ACTIVE = "ACTIVE",
-   SUSPENDED = "SUSPENDED",
+   SUSPENDED = "INACTIVE",
    DELETED = "DELETED",
 }
 
@@ -46,5 +46,6 @@ export interface IUser {
    status: Status;
    auth?: IauthProvider[];
    isActive?: boolean;
+   isApproved: boolean;
    comparePin(candidatePin: string): Promise<boolean>;
 }

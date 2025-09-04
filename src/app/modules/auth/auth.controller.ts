@@ -104,7 +104,7 @@ const googleCallbackController = catchAsync(async (req: Request, res: Response, 
    }
    const user = req.user;
 
-   console.log(user, "user");
+   // console.log(user, "user");
 
    if (!user) {
       throw new AppError(httpStatus.NOT_FOUND, "user not found");

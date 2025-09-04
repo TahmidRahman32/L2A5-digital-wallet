@@ -119,7 +119,7 @@ export const authCheck =
          }
 
          const decoded = verifiedToken(accessToken, envConfig.JWT_ACCESS_SECRET as string) as DecodedToken;
-         console.log(decoded);
+         // console.log(decoded);
 
          const isUserExist = await User.findById(decoded.userId);
 

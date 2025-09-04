@@ -23,7 +23,7 @@ export const globalErrorhandler = (err: any, req: Request, res: Response, next: 
       statusCode = 400;
       message = "ZodError";
       const zodIssues = err.issues;
-      console.log(zodIssues, "amake dekha jacche");
+      // console.log(zodIssues, "amake dekha jacche");
 
       zodIssues.forEach((issue: any) => {
          errorSources.push({
