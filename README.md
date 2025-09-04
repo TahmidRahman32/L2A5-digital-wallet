@@ -21,15 +21,15 @@ A secure, modular, and role-based backend API for a **digital wallet system** (s
 - `POST /auth/login` → Login (JWT token)  
 
 #### Wallet
-- `GET /wallets/me` → My wallet info  
-- `PATCH /wallets/block/:id` (Admin) → Block/Unblock wallet  
+- `GET /wallet/me` → My wallet info  
+- `PATCH /wallet/block/:id` (Admin) → Block/Unblock wallet  
 
 #### Transactions
-- `POST /wallets/deposit` → Add money  
-- `POST /wallets/withdraw` → Withdraw money  
-- `POST /wallets/send` → Send money to another user  
-- `GET /transactions/me` → My transaction history  
-- `GET /transactions` (Admin) → All transactions  
+- `POST /wallet/top-up` → Add money  
+- `POST /wallet/withdraw` → Withdraw money  
+- `POST /wallet/send` → Send money to another user  
+- `GET /transaction/me` → My transaction history  
+- `GET /transaction` (Admin) → All transactions  
 
 #### Admin
 - `GET /users` → View all users  
