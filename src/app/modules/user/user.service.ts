@@ -28,35 +28,35 @@ const createUser = async (payload: Partial<IUser>) => {
 };
 
 const updateUser = async (userId: string, payload: Partial<IUser>, decodedToken: JwtPayload) => {
-   const ifUserExist = await User.findById(userId);
+   const ifUserExist = await User.findById(userId).select("-password");
    if (!ifUserExist) {
       throw new AppError(httpStatus.NOT_FOUND, "User Not Found");
    }
 
    if (payload.role) {
       if (decodedToken.role === Role.USER || decodedToken.role === Role.AGENT) {
-         throw new AppError(httpStatus.FORBIDDEN, "you are not authorized");
+         throw new AppError(httpStatus.NOT_FOUND, "you are not authorized");
       }
       if (decodedToken.role === Role.ADMIN && decodedToken.role === Role.ADMIN) {
-         throw new AppError(httpStatus.FORBIDDEN, "you are not authorized");
+         throw new AppError(httpStatus.NOT_FOUND, "you are not authorized");
       }
    }
    if (payload.status || payload.status || payload.status) {
       if (decodedToken.role === Role.USER || decodedToken.role === Role.AGENT) {
-         throw new AppError(httpStatus.FORBIDDEN, "you are not authorized");
+         throw new AppError(httpStatus.NOT_FOUND, "you are not authorized");
       }
    }
    if (payload.password) {
       payload.password = await bcryptjs.hash(payload.password, Number(envConfig.BCRYPT_SALT_ROUNDS));
    }
 
-   const newUpdateUser = await User.findByIdAndUpdate(userId, payload, { new: true, runValidators: true });
+   const newUpdateUser = await User.findByIdAndUpdate(userId, payload, { new: true, runValidators: true }).select("-password");
 
    return newUpdateUser;
 };
 
 const getAllUsers = async () => {
-   const users = await User.find({});
+   const users = await User.find({}).select("-password");
 
    const totalUsers = await User.countDocuments();
 

@@ -4,7 +4,6 @@ import AppError from "../../middlewares/errorHelpers/appError";
 import httpStatus from "http-status-codes";
 import { Wallet } from "../wallet/wallet.model";
 import mongoose from "mongoose";
-import { Transaction } from "../transaction/transaction.model";
 import User from "../user/user.model";
 import { envConfig } from "../../middlewares/config/env";
 import { Role } from "../user/user.interface";
@@ -21,7 +20,7 @@ export const cashIn = catchAsync(async (req: Request, res: Response) => {
    if (agentRole !== Role.AGENT) {
       throw new AppError(httpStatus.FORBIDDEN, "Only agents can perform cash-in operations");
    }
-   const agent = await User.findById(agentId);
+   const agent = await User.findById(agentId).select("-password");
    if (!agent || (agent as any).isApproved === false) {
       throw new AppError(httpStatus.FORBIDDEN, "Agent account is not approved");
    }
@@ -37,7 +36,7 @@ export const cashIn = catchAsync(async (req: Request, res: Response) => {
    session.startTransaction();
 
    try {
-      const user = await User.findOne({ phone: userPhone });
+      const user = await User.findOne({ phone: userPhone }).select("-password");
 
       if (!user) {
          throw new AppError(httpStatus.NOT_FOUND, "User not found");
@@ -94,7 +93,7 @@ export const cashOut = catchAsync(async (req: Request, res: Response) => {
    if (agentRole !== Role.AGENT) {
       throw new AppError(httpStatus.FORBIDDEN, "Only agents can perform cash-out operations");
    }
-   const agent = await User.findById(agentId);
+   const agent = await User.findById(agentId).select("-password");
    if (!agent || (agent as any).isApproved === false) {
       throw new AppError(httpStatus.FORBIDDEN, "Agent account is not approved");
    }
@@ -111,7 +110,7 @@ export const cashOut = catchAsync(async (req: Request, res: Response) => {
    session.startTransaction();
 
    try {
-      const user = await User.findOne({ phone: userPhone });
+      const user = await User.findOne({ phone: userPhone }).select("-password");
 
       if (!user) {
          throw new AppError(httpStatus.NOT_FOUND, "User not found");

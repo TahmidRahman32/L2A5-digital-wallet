@@ -1,7 +1,3 @@
-// import { Types } from "mongoose";
-
-import { Types } from "mongoose";
-
 export enum Role {
    ADMIN = "ADMIN",
    AGENT = "AGENT",
@@ -37,6 +33,7 @@ export interface IauthProvider {
 // }
 
 export interface IUser {
+   _id?: string;
    name: string;
    email: string;
    password: string;

@@ -92,7 +92,6 @@
 // //       }
 // //    };
 
-
 import { NextFunction, Request, Response } from "express";
 import AppError from "./errorHelpers/appError";
 import { envConfig } from "./config/env";
@@ -122,6 +121,8 @@ export const authCheck =
          // console.log(decoded);
 
          const isUserExist = await User.findById(decoded.userId);
+         console.log(isUserExist);
+         
 
          if (!isUserExist) {
             throw new AppError(httpStatus.BAD_REQUEST, "User does not exist");
@@ -130,12 +131,10 @@ export const authCheck =
          if (isUserExist.status === Status.SUSPENDED) {
             throw new AppError(httpStatus.BAD_REQUEST, "User is Suspended");
          }
-      
+
          if (authRoles.length && !authRoles.includes(decoded.role)) {
             throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
          }
-
-         // ✅ Attach decoded token to req.user
          (req as any).user = decoded;
 
          next();

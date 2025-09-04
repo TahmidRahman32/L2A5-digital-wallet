@@ -40,23 +40,9 @@ const userSchema = new Schema<IUser>(
    }
 );
 
-userSchema.pre("save", async function (next) {
-   if (!this.isModified("transactionPin") || !this.transactionPin) return next();
-   this.transactionPin = await bcryptjs.hash(this.transactionPin, envConfig.BCRYPT_SALT_ROUNDS);
-   next();
-});
 
-userSchema.methods.comparePin = async function (candidatePin: string): Promise<boolean> {
-   if (!this.transactionPin) return false;
-   return await bcryptjs.compare(candidatePin, this.transactionPin);
-};
 
-// Remove sensitive information from JSON output
-userSchema.methods.toJSON = function () {
-   const userObject = this.toObject();
-   delete userObject.transactionPin;
-   return userObject;
-};
+
 
 const User = model<IUser>("User", userSchema);
 

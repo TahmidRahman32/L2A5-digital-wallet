@@ -46,10 +46,10 @@ const addMoney = async (userId: string, amount: number, resp: Response) => {
          userAmount,
          amount,
          0,
-         "add",
+         "cash-in",
          "completed",
          `Added ৳${amount} to wallet`,
-         session
+         session 
       );
 
       await session.commitTransaction();
@@ -161,7 +161,7 @@ const sendMoney = async (senderId: string, recipientPhoneNumber: string, amount:
       throw new AppError(httpStatus.BAD_REQUEST, "Recipient phone number is required");
    }
 
-   const sender = await User.findById(senderId);
+   const sender = await User.findById(senderId).select("-password");
    if (sender && sender.phone === recipientPhoneNumber) {
       throw new AppError(httpStatus.BAD_REQUEST, "Cannot send money to yourself");
    }
@@ -177,7 +177,7 @@ const sendMoney = async (senderId: string, recipientPhoneNumber: string, amount:
    session.startTransaction();
 
    try {
-      const recipient = await User.findOne({ phone: recipientPhoneNumber });
+      const recipient = await User.findOne({ phone: recipientPhoneNumber }).select("-password");
 
       if (!recipient) {
          throw new AppError(httpStatus.NOT_FOUND, "Recipient not found");
@@ -213,14 +213,8 @@ const sendMoney = async (senderId: string, recipientPhoneNumber: string, amount:
       if (senderWallet.balance < totalDeduction) {
          throw new AppError(httpStatus.BAD_REQUEST, `Insufficient balance. Need ${totalDeduction} Taka (amount + fee)`);
       }
-
-      // Deduct amount + fee from sender's wallet
       const updatedSenderWallet = await Wallet.findByIdAndUpdate(senderWallet._id, { $inc: { balance: -totalDeduction } }, { new: true, session });
 
-      // Add amount to recipient's wallet
-      const updatedRecipientWallet = await Wallet.findByIdAndUpdate(recipientWallet._id, { $inc: { balance: amount } }, { new: true, session });
-
-      // Create transaction record
       const transaction = await transactionSendMoney(senderId, recipient._id.toString() , amountNum, session);
 
       await session.commitTransaction();

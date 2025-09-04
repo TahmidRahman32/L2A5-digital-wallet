@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import AppError from "../../middlewares/errorHelpers/appError";
 import { Transaction } from "./transaction.model";
 import httpStatus from "http-status-codes";
-import { sendResponse } from "../../middlewares/Utils/sendResponse";
-export const transactions = async (userId: string, amountNum: number, feeNum: number, type: string, status: string, description: string, session: any) => {
+export const transactions = async (userId: string, amountNum: number, feeNum: number, type: string, status: string, description: string, session: unknown) => {
    const transaction = await Transaction.create(
       [
          {

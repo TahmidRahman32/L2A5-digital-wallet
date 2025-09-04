@@ -1,14 +1,10 @@
 import { Transaction } from "./transaction.model";
-
-// src/modules/transaction/transaction.controller.ts
 import { Request, Response } from "express";
 import { catchAsync } from "../../middlewares/Utils/catchAsync";
-import AppError from "../../middlewares/errorHelpers/appError";
-import httpStatus from "http-status-codes";
 import { transactionService } from "./transaction.service";
 
 export const getMyTransactions = catchAsync(async (req: Request, res: Response) => {
-   const userId = (req.user as any)?.userId;
+  const userId = (req.user as { userId: string })?.userId;
    //   const userRole = (req.user as any)?.role;
 
    await transactionService.transactionMe(userId, req, res);

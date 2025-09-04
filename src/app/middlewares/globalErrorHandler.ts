@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { envConfig } from "./config/env";
 import AppError from "./errorHelpers/appError";
 const errorSources: any = [];
@@ -11,7 +11,7 @@ const handleDuplicateError = (err: any) => {
    };
 };
 
-export const globalErrorhandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const globalErrorhandler = (err: any, req: Request, res: Response, ) => {
    let statusCode = 500;
    let message = `Something went wrong!!`;
 

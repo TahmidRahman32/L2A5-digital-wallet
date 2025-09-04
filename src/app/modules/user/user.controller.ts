@@ -1,12 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import { UserService } from "./user.service";
 import { catchAsync } from "../../middlewares/Utils/catchAsync";
 import { sendResponse } from "../../middlewares/Utils/sendResponse";
-
-
-
-const createUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+const createUser = catchAsync(async (req: Request, res: Response,) => {
    const user = await UserService.createUser(req.body);
 
    sendResponse(res, {
@@ -16,7 +13,7 @@ const createUser = catchAsync(async (req: Request, res: Response, next: NextFunc
       data: user,
    });
 });
-const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+const updateUser = catchAsync(async (req: Request, res: Response,) => {
    const userId = req.params.id;
    const VerifyToken = req.user;
    const payload = req.body;
@@ -30,7 +27,7 @@ const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunc
    });
 });
 
-const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+const getAllUsers = catchAsync(async (req: Request, res: Response, ) => {
    const result = await UserService.getAllUsers();
    sendResponse(res, {
       statusCode: httpStatus.CREATED,

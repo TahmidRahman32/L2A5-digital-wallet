@@ -1,7 +1,7 @@
 import { JwtPayload } from "jsonwebtoken";
 import { envConfig } from "../config/env";
 import AppError from "../errorHelpers/appError";
-import { isActive, IUser } from "../../modules/user/user.interface";
+import { Status, IUser } from "../../modules/user/user.interface";
 import { generateToken, verifiedToken } from "./jwt";
 import httpStatus from "http-status-codes";
 import User from "../../modules/user/user.model";
@@ -29,11 +29,8 @@ export const createNewAccessTokenWithRefreshToken = async (refreshToken: string)
    if (!isUserExist) {
       throw new AppError(httpStatus.BAD_REQUEST, "User Does Not Exist");
    }
-   if (isUserExist.isActive === isActive.BLOCKED || isUserExist.isActive === isActive.INACTIVE) {
-      throw new AppError(httpStatus.BAD_REQUEST, `user is ${isUserExist.isActive}`);
-   }
-   if (isUserExist.isDelete) {
-      throw new AppError(httpStatus.BAD_REQUEST, "User is Deleted");
+   if (isUserExist.status === Status.SUSPENDED || isUserExist.status === Status.DELETED) {
+      throw new AppError(httpStatus.BAD_REQUEST, `user is ${isUserExist.status}`);
    }
 
    const jwtPayload = {

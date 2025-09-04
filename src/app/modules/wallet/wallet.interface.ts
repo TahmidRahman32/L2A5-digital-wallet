@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document} from "mongoose";
 import { Status } from "../user/user.interface";
 
 export interface IWallet extends Document {

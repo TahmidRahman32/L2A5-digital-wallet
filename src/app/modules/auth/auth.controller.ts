@@ -45,7 +45,7 @@ const credentialLogin = catchAsync(async (req: Request, res: Response, next: Nex
    // });
 });
 
-const getNewAccessToken = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+const getNewAccessToken = catchAsync(async (req: Request, res: Response, ) => {
    const refreshToken = req.cookies.refreshToken;
 
    if (!refreshToken) {
@@ -64,7 +64,7 @@ const getNewAccessToken = catchAsync(async (req: Request, res: Response, next: N
       data: tokenInfo,
    });
 });
-const logout = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+const logout = catchAsync(async (req: Request, res: Response, ) => {
    res.clearCookie("accessToken", {
       httpOnly: true,
       secure: false,
@@ -83,7 +83,7 @@ const logout = catchAsync(async (req: Request, res: Response, next: NextFunction
    });
 });
 
-const resetPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+const resetPassword = catchAsync(async (req: Request, res: Response, ) => {
    const decodedToken = req.user;
    const oldPassword = req.body.oldPassword;
    const newPassword = req.body.newPassword;
@@ -96,7 +96,7 @@ const resetPassword = catchAsync(async (req: Request, res: Response, next: NextF
       data: null,
    });
 });
-const googleCallbackController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+const googleCallbackController = catchAsync(async (req: Request, res: Response,) => {
    let redirectTo = req.query.state ? (req.query.state as string) : "";
 
    if (redirectTo.startsWith("/")) {

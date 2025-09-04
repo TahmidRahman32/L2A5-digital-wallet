@@ -5,7 +5,7 @@ import { IauthProvider, IUser, Role, Status } from "../../modules/user/user.inte
 import User from "../../modules/user/user.model";
 export const seedAdmin = async () => {
    try {
-      const isAdminExist = await User.findOne({ email: envConfig.ADMIN_EMAIL });
+      const isAdminExist = await User.findOne({ email: envConfig.ADMIN_EMAIL }).select("-password");
 
       if (isAdminExist) {
          console.log("Admin already exist");
@@ -32,10 +32,10 @@ export const seedAdmin = async () => {
          comparePin: async (candidatePin: string): Promise<boolean> => candidatePin === "1234",
       };
 
-      // const Admin = await User.create(payload);
-      // console.log("Admin created successfully! \n");
+      const Admin = await User.create(payload);
+      console.log("Admin created successfully! \n");
 
-      // console.log(Admin);
+      console.log(Admin);
    } catch (error) {
       console.log(error);
    }

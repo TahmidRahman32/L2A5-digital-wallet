@@ -16,7 +16,7 @@ passport.use(
       },
       async (email: string, password: string, done) => {
          try {
-            const isUserExist = await User.findOne({ email });
+            const isUserExist = await User.findOne({ email })
 
             if (!isUserExist) {
                return done(null, false, { message: "user does not exist" });
@@ -85,13 +85,6 @@ passport.use(
       }
    )
 );
-
-// frontend localhost:5173/login?redirect=/booking -> localhost:5000/api/v1/auth/google?redirect=/booking -> passport -> Google OAuth Consent -> gmail login -> successful -> callback url localhost:5000/api/v1/auth/google/callback -> db store -> token
-
-// Bridge == Google -> user db store -> token
-//Custom -> email , password, role : USER, name... -> registration -> DB -> 1 User create
-//Google -> req -> google -> successful : Jwt Token : Role , email -> DB - Store -> token - api access
-
 passport.serializeUser((user: any, done: (err: any, id?: unknown) => void) => {
    done(null, user._id);
 });
@@ -101,7 +94,6 @@ passport.deserializeUser(async (id: string, done: any) => {
       const user = await User.findById(id);
       done(null, user);
    } catch (error) {
-      // console.log(error);
       done(error);
    }
 });

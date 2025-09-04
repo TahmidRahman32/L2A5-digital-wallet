@@ -12,14 +12,14 @@ import { AdminTransactionService } from "./admin.service";
 export const blockWallet = catchAsync(async (req: Request, res: Response) => {
    const { userId } = req.params;
    const { isBlocked, reason } = req.body;
-   const adminId = (req.user as any)?.userId;
+   const adminId = (req.user as { userId: string })?.userId;
 
    if (typeof isBlocked !== "boolean") {
       throw new AppError(httpStatus.BAD_REQUEST, "isBlocked must be a boolean value");
    }
 
    // Find the user
-   const user = await User.findById(userId);
+   const user = await User.findById(userId).select("-password");
    if (!user) {
       throw new AppError(httpStatus.NOT_FOUND, "User not found");
    }
@@ -81,8 +81,8 @@ export const getWalletStatus = catchAsync(async (req: Request, res: Response) =>
 
 export const unblockWallet = catchAsync(async (req: Request, res: Response) => {
    const { userId } = req.params;
-   const adminId = (req.user as any)?.userId;
-   const user = await User.findById(userId);
+  const adminId = (req.user as { userId: string })?.userId;
+   const user = await User.findById(userId).select("-password");
    if (!user) {
       throw new AppError(httpStatus.NOT_FOUND, "User not found");
    }
@@ -129,8 +129,8 @@ export const unblockWallet = catchAsync(async (req: Request, res: Response) => {
 export const approveAgent = catchAsync(async (req: Request, res: Response) => {
    const { agentId } = req.params;
    const { isApproved, reason } = req.body;
-   const userRole = (req.user as any)?.role;
-   const adminId = (req.user as any)?.userId;
+   const userRole = (req.user as { role: string })?.role;
+   const adminId = (req.user as { userId: string })?.userId;
    // console.log(isApproved, reason);
 
    if (typeof isApproved !== "boolean") {
@@ -138,7 +138,7 @@ export const approveAgent = catchAsync(async (req: Request, res: Response) => {
    }
 
    // Find the agent
-   const agent = await User.findById(agentId);
+   const agent = await User.findById(agentId).select("-password");
 
    if (userRole === Role.AGENT) {
       throw new AppError(httpStatus.BAD_REQUEST, `User is already a ${Role.AGENT}`);
@@ -228,9 +228,9 @@ export const approveAgent = catchAsync(async (req: Request, res: Response) => {
 export const suspendAgent = catchAsync(async (req: Request, res: Response) => {
    const { agentId } = req.params;
    const { reason } = req.body;
-   const adminId = (req.user as any)?.userId;
+    const adminId = (req.user as { userId: string })?.userId;
 
-   const agent = await User.findById(agentId);
+   const agent = await User.findById(agentId).select("-password");
    if (!agent) {
       throw new AppError(httpStatus.NOT_FOUND, "User not found");
    }
